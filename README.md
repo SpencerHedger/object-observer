@@ -11,6 +11,7 @@
  An observers can be notified either before, after or on cancel of a change made through
  the proxy. They take the form of either:
  	A function, with three parameters (which is called before update):
+	
 		value			The value that is about to be assigned
 		
 		data			The data object containing the property
@@ -23,6 +24,7 @@
  	... or ...
  	
  	An object with any of the following functions defined:
+	
  		onBind		Called once when the observer is bound to the proxy
  					Expects a function with parameters of value, data and propertyName
  					
