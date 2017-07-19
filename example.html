@@ -1,0 +1,46 @@
+<html>
+<head>
+	<script src="object-observer.js"></script>
+</head>
+<body>
+	<p>This example shows how changing the data through the proxy object can be reflected
+	   on the page.</p>
+	<p>Validation is provided via a "before" function observing the name property of the
+	   data. If you try to type the name "mike" it will not be permitted. But all other
+	   changes ripple instantly through to the name span.</p>
+	<p>My name: <span id="example"></span></p>
+	<input id="nameinput" type="text" onkeyup="obj.name = this.value;"></input>
+	<button onclick="console.log(data.name);">Log value of data.name to console</button>
+	
+	<button onclick="obj.name = 'fred';">Set name back to 'fred'</button>
+	<script>
+		var example = document.getElementById("example");
+		var nameinput = document.getElementById("nameinput");
+		
+		// Underlying data object
+		var data = { name: 'fred' };
+		
+		// Create an observable proxy object to the data
+		var obj = ObjObserver.observable(data);
+		
+		// Keep the example label synchronised with the data after successful update.
+		obj.observe.name = {
+			onBind: function(v) { example.innerHTML = v; }, // Set the initial value
+			after:  function(v) { example.innerHTML = v; } // Keep synchronised
+		};
+		
+		// Keep name input synchronised with the data.
+		obj.observe.name = {
+			onBind: function(v) { nameinput.value = v; }, // Set the initial value
+			after:  function(v) { nameinput.style.color = '#000'; nameinput.value = v; }, // Reset color and keep synchronised
+			cancel: function(v) { nameinput.style.color = '#f00'; } // Set colour to red if bad
+		};
+		
+		// Provide validation that prevents the name 'mike' being set.
+		obj.observe.name = {
+			before: function(v, o, p) { if(v == 'mike') return false; },
+			cancel: function(v, o, p) { console.log('tried to change ' + o[p] + ' to ' + v); }
+		}
+	</script>
+</body>
+</html>
