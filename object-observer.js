@@ -23,8 +23,13 @@
  you change the value of the observed property through the proxy the element will
  automatically update to reflect the changes.
  
- If the default name 'observe' on the Proxy clashes with any property in your data,
- you can rename this by specifying an alternative as the second parameter to the
+ To perform validation, you can prevent a change from reaching the underlying
+ data object by returning 'false' from the observer function. Note that if any observers
+ have updated view state, they will not be aware that the value change was cancelled. It
+ is best to add validating observers before any that update views.
+ 
+ If the default name 'observe' for assigning observers on the Proxy clashes with any property
+ in your data, you can rename this by specifying an alternative as the second parameter to the
  observable() function.
  
  You can add more than one observer to any given object or property.
