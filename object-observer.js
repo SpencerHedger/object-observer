@@ -153,5 +153,5 @@ var ObjObserver = function() {
 	
 	return {
 		observable: observable
-	}
+	};
 }();
